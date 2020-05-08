@@ -1,3 +1,5 @@
+'use strict';
+
 /* eslint-disable */
 
 /*******************************************************************************
@@ -8,7 +10,6 @@
  * developing your theme.
  ******************************************************************************/
 
-
 /**
  * Persistent preview bar minimization
  *
@@ -17,32 +18,14 @@
  * checked for on subsequent page loads, and if found, the preview is hidden.
  */
 
-(function() {
-  if (!isSessionStorageSupported()) { return; }
+(function () {
+  if (!isSessionStorageSupported()) {
+    return;
+  }
 
-  window.addEventListener('DOMContentLoaded', function() {
-    var previewBarMinimizeElement = document.getElementsByClassName('shopify-preview-bar__minimize');
-
-    if (previewBarMinimizeElement.length > 0) {
-      previewBarMinimizeElement[0].addEventListener('click', onButtonClick);
-    }
-
-    if (window.sessionStorage.getItem('preview-bar-hidden')) {
-      hidePreviewBar();
-    }
+  window.addEventListener('DOMContentLoaded', function () {
+    injectStyles('#preview-bar-iframe { display:none; }');
   });
-
-  function onButtonClick(event) {
-    var element = event.target;
-
-    window.sessionStorage.setItem('preview-bar-hidden', 'true');
-    hidePreviewBar();
-    document.removeEventListener('click', onButtonClick);
-  }
-
-  function hidePreviewBar() {
-    injectStyles('.shopify-preview-bar { display:none; }');
-  }
 
   function injectStyles(css) {
     var head = document.getElementsByTagName('head')[0];
@@ -50,9 +33,11 @@
 
     style.setAttribute('type', 'text/css');
 
-    if (style.styleSheet) { // IE
+    if (style.styleSheet) {
+      // IE
       style.styleSheet.cssText = css;
-    } else { // Everything else
+    } else {
+      // Everything else
       style.appendChild(document.createTextNode(css));
     }
 
